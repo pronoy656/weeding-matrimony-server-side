@@ -48,6 +48,12 @@ async function run() {
       res.send(result)
     })
 
+    // get method for all users in admin dashboard
+    app.get('/users', async(req,res) =>{
+      const result = await userCollection.find().toArray();
+      res.send(result)
+  })
+
 // ***************End*************
 
 // ************** Bio Data***************
