@@ -33,6 +33,7 @@ async function run() {
     const favoriteCollection = client.db('Matrimonial').collection('favorite');
     const userCollection = client.db('Matrimonial').collection('users');
     
+// **************Users***********
 
     // post method for users
     app.post('/users', async(req,res) =>{
@@ -47,6 +48,9 @@ async function run() {
       res.send(result)
     })
 
+// ***************End*************
+
+// ************** Bio Data***************
     // post method for BioData
     app.post('/bioData', async(req,res) =>{
       const newBioData = req.body
@@ -70,6 +74,16 @@ async function run() {
       res.send(result)
   })
   
+  // get method for male basis
+  // app.get('/male', async(req,res) =>{
+  //   const male = req.query.male
+  //   const query = {
+  //     Biodata_Type: male}
+  //   if(query === 'male'){
+  //     const result = await bioDataCollection.find(query).toArray()
+  //     res.send(result)
+  //   } 
+  // })
 
 
 //    get method for details page
@@ -81,7 +95,9 @@ async function run() {
             res.send(result)
 })
 
+// *****************End**************
 
+// *****************Favorite*********
   // get method for  favorite on dashboard
   app.get('/favorite', async(req,res) =>{
     const email = req.query.email
@@ -98,7 +114,7 @@ app.post('/favorite', async(req,res) =>{
     res.send(result)
   })
 
-
+// ****************End******************
 
 
     // Send a ping to confirm a successful connection
