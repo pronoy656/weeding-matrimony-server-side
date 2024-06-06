@@ -184,6 +184,12 @@ app.post('/favorite', async(req,res) =>{
     const result = await premiumCollection.insertOne(newPremium)
     res.send(result)
   })
+   
+  // get method for load premium data on admin dashboard
+  app.get('/premium',  async(req,res) =>{
+    const result = await premiumCollection.find().toArray();
+    res.send(result)
+})
 
 
     // Send a ping to confirm a successful connection
