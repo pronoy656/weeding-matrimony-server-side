@@ -33,6 +33,7 @@ async function run() {
     const bioDataCollection = client.db('Matrimonial').collection('biodata');
     const favoriteCollection = client.db('Matrimonial').collection('favorite');
     const userCollection = client.db('Matrimonial').collection('users');
+    const premiumCollection = client.db('Matrimonial').collection('premium');
 
     // jwt related api
     app.post('/jwt', async(req,res) =>{
@@ -174,6 +175,15 @@ app.post('/favorite', async(req,res) =>{
   })
 
 // ****************End******************
+
+// *****************premium*********
+  // post method for premium
+  app.post('/premium', async(req,res) =>{
+    const newPremium = req.body
+    console.log(newPremium)
+    const result = await premiumCollection.insertOne(newPremium)
+    res.send(result)
+  })
 
 
     // Send a ping to confirm a successful connection
