@@ -34,6 +34,7 @@ async function run() {
     const favoriteCollection = client.db('Matrimonial').collection('favorite');
     const userCollection = client.db('Matrimonial').collection('users');
     const premiumCollection = client.db('Matrimonial').collection('premium');
+    const premiumCollectionBio = client.db('Matrimonial').collection('premiumCltBio');
 
     // jwt related api
     app.post('/jwt', async(req,res) =>{
@@ -221,19 +222,19 @@ app.post('/favorite', async(req,res) =>{
 })
 
 // todo patch method use for premium update
-// app.patch('/users/premium/:id', async(req,res) =>{
-//   const id = req.params.id
-//   // const newPremium = req.body
-//   const filter = {_id: new ObjectId(id)}
-//   const updateDoc = {
-//     $set: {
-//       role: 'premium'
-//     } 
-//   }
-//   const result = await premiumCollection.updateOne(filter,updateDoc)
-//   // const post = await premiumCollection.insertOne(newPremium)
-//   res.send(result)
-// })
+app.post('/users/premiumCltBio/:id', async(req,res) =>{
+  const id = req.params.id
+  const newPremiumBio = req.body
+  const filter = {_id: new ObjectId(id)}
+  const updateDoc = {
+    $set: {
+      role: 'premium'
+    } 
+  }
+  const result = await premiumCollection.updateOne(filter,updateDoc)
+  const post = await premiumCollectionBio.insertOne(newPremiumBio)
+  res.send(result)
+})
 
 
     // Send a ping to confirm a successful connection
