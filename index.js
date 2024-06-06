@@ -221,6 +221,7 @@ app.post('/favorite', async(req,res) =>{
     res.send(result)
 })
 
+// ***************Done****************************
 // todo patch method use for premium update
 app.post('/users/premiumCltBio/:id', async(req,res) =>{
   const id = req.params.id
@@ -233,6 +234,12 @@ app.post('/users/premiumCltBio/:id', async(req,res) =>{
   }
   const result = await premiumCollection.updateOne(filter,updateDoc)
   const post = await premiumCollectionBio.insertOne(newPremiumBio)
+  res.send(result)
+})
+
+// get method for premium bio data
+app.get('/premiumMember',  async(req,res) =>{
+  const result = await premiumCollectionBio.find().toArray();
   res.send(result)
 })
 
