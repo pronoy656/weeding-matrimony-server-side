@@ -93,6 +93,19 @@ async function run() {
     res.send(result)
   })
 
+  // update method for make premium
+  app.patch('/users/premium/:id', async(req,res) =>{
+    const id = req.params.id
+    const filter = {_id: new ObjectId(id)}
+    const updateDoc = {
+      $set: {
+        role: 'premium'
+      } 
+    }
+    const result = await userCollection.updateOne(filter,updateDoc)
+    res.send(result)
+  })
+
   // get method for verify admin
   app.get('/user/admin/:email', verifyToken, async(req,res) =>{
      const email = req.params.email
@@ -108,6 +121,21 @@ async function run() {
        res.send({admin});
   })
 
+  // get method for verify premium
+  app.get('/user/premium/:email', verifyToken, async(req,res) =>{
+    const email = req.params.email
+    if(email !== req.decoded.email){
+      return res.status(403).send({message: 'unauthorized access'})
+    }
+    const query = {email: email}
+    const user = await userCollection.findOne(query)
+    let premium = false;
+    if(user){
+      premium = user?.role === 'premium';
+    }
+      res.send({premium});
+ })
+
 // ***************End*************
 
 // ************** Bio Data***************
@@ -121,7 +149,7 @@ async function run() {
 
     // get allBioData
     app.get('/bioData', async(req,res) =>{
-        const result = await bioDataCollection.find().toArray();
+        const result = await bioDataCollection.find().sort({id: 1}).toArray();
         res.send(result)
     })
 
@@ -184,12 +212,28 @@ app.post('/favorite', async(req,res) =>{
     const result = await premiumCollection.insertOne(newPremium)
     res.send(result)
   })
-   
+
+ 
   // get method for load premium data on admin dashboard
   app.get('/premium',  async(req,res) =>{
     const result = await premiumCollection.find().toArray();
     res.send(result)
 })
+
+// todo patch method use for premium update
+// app.patch('/users/premium/:id', async(req,res) =>{
+//   const id = req.params.id
+//   // const newPremium = req.body
+//   const filter = {_id: new ObjectId(id)}
+//   const updateDoc = {
+//     $set: {
+//       role: 'premium'
+//     } 
+//   }
+//   const result = await premiumCollection.updateOne(filter,updateDoc)
+//   // const post = await premiumCollection.insertOne(newPremium)
+//   res.send(result)
+// })
 
 
     // Send a ping to confirm a successful connection
