@@ -64,7 +64,6 @@ async function run() {
     // post method for users
     app.post('/users', async(req,res) =>{
       const newUsers = req.body
-      // console.log(newUsers)
       const query = {email: newUsers.email}
       const existingUser = await userCollection.findOne(query)
       if(existingUser){
@@ -76,7 +75,6 @@ async function run() {
 
     // get method for all users in admin dashboard
     app.get('/users', verifyToken, async(req,res) =>{
-     
       const result = await userCollection.find().toArray();
       res.send(result)
   })
@@ -92,6 +90,21 @@ async function run() {
     }
     const result = await userCollection.updateOne(filter,updateDoc)
     res.send(result)
+  })
+
+  // get method for verify admin
+  app.get('/user/admin/:email', verifyToken, async(req,res) =>{
+     const email = req.params.email
+     if(email !== req.decoded.email){
+       return res.status(403).send({message: 'unauthorized access'})
+     }
+     const query = {email: email}
+     const user = await userCollection.findOne(query)
+     let admin = false;
+     if(user){
+       admin = user?.role === 'admin';
+     }
+       res.send({admin});
   })
 
 // ***************End*************
