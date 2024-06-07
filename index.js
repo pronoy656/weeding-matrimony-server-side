@@ -122,7 +122,7 @@ async function run() {
        res.send({admin});
   })
 
-  // get method for verify premium
+  // get method for verify premium **************************************PRONOY***************
   app.get('/user/premium/:email', verifyToken, async(req,res) =>{
     const email = req.params.email
     if(email !== req.decoded.email){
@@ -235,6 +235,21 @@ app.post('/users/premiumCltBio/:id', async(req,res) =>{
   const result = await premiumCollection.updateOne(filter,updateDoc)
   const post = await premiumCollectionBio.insertOne(newPremiumBio)
   res.send(result)
+})
+
+// get method for verify another premium user
+app.get('/user/anotherPremium/:email', verifyToken, async(req,res) =>{
+  const email = req.params.email
+  if(email !== req.decoded.email){
+    return res.status(403).send({message: 'unauthorized access'})
+  }
+  const query = {email: email}
+  const user = await premiumCollection.findOne(query)
+  let premium = false;
+  if(user){
+    premium = user?.role === 'premium';
+  }
+    res.send({premium});
 })
 
 // get method for premium bio data
