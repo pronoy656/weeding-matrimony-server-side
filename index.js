@@ -35,6 +35,7 @@ async function run() {
     const userCollection = client.db('Matrimonial').collection('users');
     const premiumCollection = client.db('Matrimonial').collection('premium');
     const premiumCollectionBio = client.db('Matrimonial').collection('premiumCltBio');
+    const reviewCollection = client.db('Matrimonial').collection('review');
 
     // jwt related api
     app.post('/jwt', async(req,res) =>{
@@ -255,6 +256,12 @@ app.get('/user/anotherPremium/:email', verifyToken, async(req,res) =>{
 // get method for premium bio data
 app.get('/premiumMember',  async(req,res) =>{
   const result = await premiumCollectionBio.find().toArray();
+  res.send(result)
+})
+
+// get method review collection
+app.get('/review',  async(req,res) =>{
+  const result = await reviewCollection.find().toArray();
   res.send(result)
 })
 
