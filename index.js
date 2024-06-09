@@ -37,6 +37,7 @@ async function run() {
     const premiumCollection = client.db('Matrimonial').collection('premium');
     const premiumCollectionBio = client.db('Matrimonial').collection('premiumCltBio');
     const reviewCollection = client.db('Matrimonial').collection('review');
+    const paymentCollection = client.db('Matrimonial').collection('payments');
 
     // jwt related api
     app.post('/jwt', async(req,res) =>{
@@ -290,6 +291,22 @@ app.post('/create-payment-intent', async(req,res) =>{
     clientSecret: paymentIntent.client_secret
   })
 })
+
+// payment post related api
+app.post('/payments', async(req,res) =>{
+  const newPayment = req.body
+  console.log(newPayment)
+  const result = await paymentCollection.insertOne(newPayment)
+  res.send(result)
+})
+// get method for contact req page
+app.get('/payment',  async(req,res) =>{
+  const email = req.query.email
+  const query = {email: email}
+  const result = await paymentCollection.find(query).toArray();
+  res.send(result)
+})
+
 
 
     // Send a ping to confirm a successful connection
