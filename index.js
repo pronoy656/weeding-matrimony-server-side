@@ -326,6 +326,21 @@ app.patch('/users/approveRequest/:id', async(req,res) =>{
   res.send(result)
 })
 
+// get method for verify approval user
+app.get('/user/approvalReq/:email', verifyToken, async(req,res) =>{
+  const email = req.params.email
+  if(email !== req.decoded.email){
+    return res.status(403).send({message: 'unauthorized access'})
+  }
+  const query = {email: email}
+  const user = await paymentCollection.findOne(query)
+  let approval = false;
+  if(user){
+    approval = user?.role === 'approval';
+  }
+    res.send({approval});
+})
+
 
 
     // Send a ping to confirm a successful connection
