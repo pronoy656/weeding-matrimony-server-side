@@ -299,11 +299,17 @@ app.post('/payments', async(req,res) =>{
   const result = await paymentCollection.insertOne(newPayment)
   res.send(result)
 })
-// get method for contact req page
+// get method for contact req page email basis
 app.get('/payment',  async(req,res) =>{
   const email = req.query.email
   const query = {email: email}
   const result = await paymentCollection.find(query).toArray();
+  res.send(result)
+})
+
+// get method for all payment data in admin dashboard
+app.get('/paymentAdmin',  async(req,res) =>{
+  const result = await paymentCollection.find().toArray();
   res.send(result)
 })
 
