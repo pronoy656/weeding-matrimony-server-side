@@ -269,6 +269,14 @@ app.get('/premiumMember',  async(req,res) =>{
   res.send(result)
 })
 
+// post method to database for review
+app.post('/review', async(req,res) =>{
+  const newReview = req.body
+  console.log(newReview)
+  const result = await reviewCollection.insertOne(newReview)
+  res.send(result)
+})
+
 // get method review collection
 app.get('/review',  async(req,res) =>{
   const result = await reviewCollection.find().toArray();
