@@ -315,6 +315,14 @@ app.get('/payment',  async(req,res) =>{
   res.send(result)
 })
 
+// delete method from payment
+app.delete('/payment/:id', async(req,res) =>{
+  const id = req.params.id
+  const query = {_id: new ObjectId(id)}
+  const result = await paymentCollection.deleteOne(query)
+  res.send(result)
+})
+
 // get method for all payment data in admin dashboard
 app.get('/paymentAdmin',  async(req,res) =>{
   const result = await paymentCollection.find().toArray();
