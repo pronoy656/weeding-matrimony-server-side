@@ -145,8 +145,10 @@ async function run() {
 // ************** Bio Data***************
     // post method for BioData
     app.post('/bioData', async(req,res) =>{
+      // const id = req.params.id
       const newBioData = req.body
       console.log(newBioData)
+
       const result = await bioDataCollection.insertOne(newBioData)
       res.send(result)
     })
