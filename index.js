@@ -235,6 +235,14 @@ app.delete('/favorite/:id', async(req,res) =>{
     res.send(result)
 })
 
+app.get('/premiumDetails/:id',  async (req,res) =>{
+  const id = req.params.id;
+  console.log({id})
+  const query = {_id: new ObjectId(id)}
+  const result = await premiumCollection.findOne(query)
+  res.send(result)
+})
+
 // ***************Done****************************
 // todo patch method use for premium update
 app.post('/users/premiumCltBio/:id', async(req,res) =>{
