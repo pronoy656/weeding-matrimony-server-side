@@ -148,8 +148,9 @@ async function run() {
       // const id = req.params.id
       const newBioData = req.body
       console.log(newBioData)
-
-      const result = await bioDataCollection.insertOne(newBioData)
+      const allBioData = await bioDataCollection.find().sort({id: 1}).toArray();
+      newBioData.id = allBioData.length + 1;
+      const result = await bioDataCollection.insertOne({...newBioData,id:allBioData.length+1})
       res.send(result)
     })
 
@@ -329,6 +330,31 @@ app.delete('/payment/:id', async(req,res) =>{
 app.get('/paymentAdmin',  async(req,res) =>{
   const result = await paymentCollection.find().toArray();
   res.send(result)
+})
+
+// admin dashboard control
+app.get('/admin-stats', async(req,res)=>{
+  const users = await userCollection.estimatedDocumentCount();
+  const premium = await premiumCollectionBio.estimatedDocumentCount();
+
+const result = await paymentCollection.aggregate([
+  {
+ $group: {
+  _id: null,
+  totalRevenue:{
+    $sum: '$price'
+  }
+ }
+
+  }
+]).toArray()
+
+const revenue = result.length > 0 ? result[0].totalRevenue : 0
+
+
+  res.send([{name: 'users', total: users},{name:" premium", total: premium},{name: 'revenue', total: revenue}
+  
+])
 })
 
 // update method for approve contact request
